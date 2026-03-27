@@ -1,0 +1,20 @@
+
+local targetGameId = 142823291
+local currentGameId = game.PlaceId
+
+if currentGameId == targetGameId then
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nickwhile89-bit/Gamemm2/refs/heads/main/Mm2ingdingscrpit"))()
+else
+game:GetService("StarterGui"):SetCore("SendNotification", {
+Title = "Warning",
+Text = "go mm2 bro not for this game",
+Duration = 5
+})
+
+
+wait(2)
+
+
+game:GetService("Players").LocalPlayer:Kick("go mm2 bro not for this game")
+end
