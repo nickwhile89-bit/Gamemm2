@@ -1,1 +1,196 @@
-return(funct
+-- // Ingding Hub - Multi-Game Support Script // --
+-- // Game ID Check System // --
+
+local lp = game.Players.LocalPlayer
+local currentGameId = game.PlaceId
+
+-- // Supported Games List // --
+local supportedGames = {
+    [100178831086674] = {name = "Bomb Coins 2x", scriptUrl = "https://pastefy.app/MxbMd1U5/raw"},
+    [11379739543] = {name = "Bomb Alpha", scriptUrl = "https://pastefy.app/MxbMd1U5/raw"},
+    [72930661540365] = {name = "Bomb 2", scriptUrl = "https://pastefy.app/MxbMd1U5/raw"},
+    [142823291] = {name = "MM2", scriptUrl = "https://raw.githubusercontent.com/nickwhile89-bit/Gamemm2/refs/heads/main/Mm2ingdingscrpit"}
+}
+
+-- // Check if current game is supported // --
+local gameInfo = supportedGames[currentGameId]
+
+if not gameInfo then
+    -- Not supported game
+    local notification = Instance.new("ScreenGui")
+    notification.Name = "GameCheckNotification"
+    notification.ResetOnSpawn = false
+    notification.DisplayOrder = 9999999
+    notification.Parent = lp:WaitForChild("PlayerGui")
+    
+    local notifyFrame = Instance.new("Frame")
+    notifyFrame.Size = UDim2.new(0, 350, 0, 120)
+    notifyFrame.Position = UDim2.new(0.5, -175, 0.4, -60)
+    notifyFrame.BackgroundColor3 = Color3.fromRGB(25, 28, 38)
+    notifyFrame.BorderSizePixel = 0
+    notifyFrame.Parent = notification
+    
+    local notifyCorner = Instance.new("UICorner", notifyFrame)
+    notifyCorner.CornerRadius = UDim.new(0, 12)
+    
+    local notifyStroke = Instance.new("UIStroke", notifyFrame)
+    notifyStroke.Thickness = 2
+    notifyStroke.Color = Color3.fromRGB(255, 70, 70)
+    
+    local warningIcon = Instance.new("TextLabel")
+    warningIcon.Size = UDim2.new(1, 0, 0, 35)
+    warningIcon.Position = UDim2.new(0, 0, 0, 15)
+    warningIcon.BackgroundTransparency = 1
+    warningIcon.Text = "⚠️ GAME NOT SUPPORTED ⚠️"
+    warningIcon.TextColor3 = Color3.fromRGB(255, 200, 50)
+    warningIcon.Font = Enum.Font.GothamBold
+    warningIcon.TextSize = 16
+    warningIcon.Parent = notifyFrame
+    
+    local messageText = Instance.new("TextLabel")
+    messageText.Size = UDim2.new(1, 0, 0, 25)
+    messageText.Position = UDim2.new(0, 0, 0, 55)
+    messageText.BackgroundTransparency = 1
+    messageText.Text = "This script only works in:"
+    messageText.TextColor3 = Color3.fromRGB(200, 200, 220)
+    messageText.Font = Enum.Font.Gotham
+    messageText.TextSize = 13
+    messageText.Parent = notifyFrame
+    
+    local gamesList = Instance.new("TextLabel")
+    gamesList.Size = UDim2.new(1, 0, 0, 20)
+    gamesList.Position = UDim2.new(0, 0, 0, 80)
+    gamesList.BackgroundTransparency = 1
+    gamesList.Text = "• Bomb Coins 2x • Bomb Alpha • Bomb 2 • MM2"
+    gamesList.TextColor3 = Color3.fromRGB(150, 150, 170)
+    gamesList.Font = Enum.Font.Gotham
+    gamesList.TextSize = 11
+    gamesList.Parent = notifyFrame
+    
+    task.wait(5)
+    
+    -- Kick player
+    lp:Kick("❌ This script only works in supported games!\n• Bomb Coins 2x\n• Bomb Alpha\n• Bomb 2\n• MM2")
+    
+    return
+end
+
+-- // Load appropriate script for the game // --
+print("✅ Game detected: " .. gameInfo.name)
+print("📥 Loading script...")
+
+-- Show loading notification
+local loadingGui = Instance.new("ScreenGui")
+loadingGui.Name = "LoadingNotification"
+loadingGui.ResetOnSpawn = false
+loadingGui.DisplayOrder = 9999998
+loadingGui.Parent = lp:WaitForChild("PlayerGui")
+
+local loadingFrame = Instance.new("Frame")
+loadingFrame.Size = UDim2.new(0, 300, 0, 80)
+loadingFrame.Position = UDim2.new(0.5, -150, 0.4, -40)
+loadingFrame.BackgroundColor3 = Color3.fromRGB(20, 22, 30)
+loadingFrame.BorderSizePixel = 0
+loadingFrame.Parent = loadingGui
+
+local loadingCorner = Instance.new("UICorner", loadingFrame)
+loadingCorner.CornerRadius = UDim.new(0, 10)
+
+local loadingStroke = Instance.new("UIStroke", loadingFrame)
+loadingStroke.Thickness = 1.5
+loadingStroke.Color = Color3.fromRGB(100, 70, 255)
+
+local loadingText = Instance.new("TextLabel")
+loadingText.Size = UDim2.new(1, 0, 0, 30)
+loadingText.Position = UDim2.new(0, 0, 0, 10)
+loadingText.BackgroundTransparency = 1
+loadingText.Text = "🎮 Loading " .. gameInfo.name .. " Script..."
+loadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
+loadingText.Font = Enum.Font.GothamBold
+loadingText.TextSize = 14
+loadingText.Parent = loadingFrame
+
+local progressBar = Instance.new("Frame")
+progressBar.Size = UDim2.new(0.8, 0, 0, 6)
+progressBar.Position = UDim2.new(0.1, 0, 0, 50)
+progressBar.BackgroundColor3 = Color3.fromRGB(40, 43, 55)
+progressBar.BorderSizePixel = 0
+progressBar.Parent = loadingFrame
+
+local progressCorner = Instance.new("UICorner", progressBar)
+progressCorner.CornerRadius = UDim.new(0, 3)
+
+local progressFill = Instance.new("Frame")
+progressFill.Size = UDim2.new(0, 0, 1, 0)
+progressFill.BackgroundColor3 = Color3.fromRGB(100, 70, 255)
+progressFill.BorderSizePixel = 0
+progressFill.Parent = progressBar
+
+local progressFillCorner = Instance.new("UICorner", progressFill)
+progressFillCorner.CornerRadius = UDim.new(0, 3)
+
+-- Animate progress
+task.spawn(function()
+    for i = 1, 100 do
+        progressFill.Size = UDim2.new(i / 100, 0, 1, 0)
+        task.wait(0.01)
+    end
+end)
+
+-- Load the script
+local success, err = pcall(function()
+    loadstring(game:HttpGet(gameInfo.scriptUrl))()
+end)
+
+task.wait(1)
+loadingGui:Destroy()
+
+if not success then
+    warn("❌ Failed to load script: " .. tostring(err))
+    
+    -- Show error notification
+    local errorGui = Instance.new("ScreenGui")
+    errorGui.Name = "ErrorNotification"
+    errorGui.ResetOnSpawn = false
+    errorGui.DisplayOrder = 9999999
+    errorGui.Parent = lp:WaitForChild("PlayerGui")
+    
+    local errorFrame = Instance.new("Frame")
+    errorFrame.Size = UDim2.new(0, 320, 0, 100)
+    errorFrame.Position = UDim2.new(0.5, -160, 0.4, -50)
+    errorFrame.BackgroundColor3 = Color3.fromRGB(30, 20, 20)
+    errorFrame.BorderSizePixel = 0
+    errorFrame.Parent = errorGui
+    
+    local errorCorner = Instance.new("UICorner", errorFrame)
+    errorCorner.CornerRadius = UDim.new(0, 10)
+    
+    local errorStroke = Instance.new("UIStroke", errorFrame)
+    errorStroke.Thickness = 2
+    errorStroke.Color = Color3.fromRGB(255, 50, 50)
+    
+    local errorIcon = Instance.new("TextLabel")
+    errorIcon.Size = UDim2.new(1, 0, 0, 30)
+    errorIcon.Position = UDim2.new(0, 0, 0, 15)
+    errorIcon.BackgroundTransparency = 1
+    errorIcon.Text = "❌ LOAD FAILED"
+    errorIcon.TextColor3 = Color3.fromRGB(255, 100, 100)
+    errorIcon.Font = Enum.Font.GothamBold
+    errorIcon.TextSize = 16
+    errorIcon.Parent = errorFrame
+    
+    local errorText = Instance.new("TextLabel")
+    errorText.Size = UDim2.new(1, -20, 0, 40)
+    errorText.Position = UDim2.new(0, 10, 0, 50)
+    errorText.BackgroundTransparency = 1
+    errorText.Text = "Script could not be loaded.\nPlease try again later."
+    errorText.TextColor3 = Color3.fromRGB(200, 200, 220)
+    errorText.Font = Enum.Font.Gotham
+    errorText.TextSize = 12
+    errorText.Parent = errorFrame
+    
+    task.wait(3)
+    errorGui:Destroy()
+else
+    print("✅ Script loaded successfully!")
+end
